@@ -33,4 +33,34 @@ const arrFromSet2 = Array.from(set);
 
 // Map
 
-const map = new Map();
+const map1 = new Map([
+    ['one', '1'],
+    [2, 'two'],
+    [{ name: 'John' }, 'three']
+]);
+
+// console.log(map1);
+
+const map2 = new Map();
+map2.set('entry', 'one');
+// console.log(map2.get('entry'));
+map2.set('entry2', 'two');
+// console.log(map2.has('entry2'));
+
+// for (let value of map2.values()) {
+//     console.log(value);
+// }
+
+// for (let key of map2.keys()) {
+//     console.log(key);
+// }
+
+// for (let entry of map2.entries()) {
+//     console.log(entry);
+// }
+
+console.log(map2.size);
+
+const objFromMap2 = Object.fromEntries(map2.entries());
+
+console.log(objFromMap2);
