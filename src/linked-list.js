@@ -8,12 +8,18 @@ class Node {
 class LinkedList {
     constructor() {
         this.head = null;
+        this._size = 0;
+    }
+
+    get size() {
+        return this._size;
     }
 
     prepend(value) {
         const node = new Node(value);
         node.next = this.head;
         this.head = node;
+        this._size++;
     }
 
     append(value) {
