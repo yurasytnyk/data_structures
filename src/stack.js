@@ -1,58 +1,57 @@
 class Stack {
     constructor() {
-        this.items = [];
+        this.stack = [];
         this.count = 0;
     }
 
-    push(element) {
-        this.items[this.count] = element;
-        this.count += 1;
-
-        return this.count - 1;
+    push(value) {
+        this.stack[this.count++] = value;
     }
 
     pop() {
         if (this.count === 0) return undefined;
-        let deleteItem = this.items[this.count - 1];
-        this.count -= 1;
 
-        return deleteItem;
+        this.count--;
+        const result = this.stack[this.count];
+        delete this.stack[this.count];
+
+        return result;
     }
 
     peak() {
-        return this.items[this.count - 1];
+        return this.stack[this.count - 1];
     }
 
-    isEmpty() {
-        return this.count === 0;
+    clear() {
+        this.stack = [];
+        this.count = 0;
     }
-    
+
     size() {
         return this.count;
     }
 
-    print() {
-        this.items.forEach((item, i) => console.log(`${item} has index ${i}`));
-    }
-
-    clear() {
-        this.items = [];
-        this.count = 0;
-
-        return this.items;
+    isEmpty() {
+        return !this.count;
     }
 }
 
-const stack = new Stack();
+function isPalindrom() {
+    const word = 'racecar';
+    const stack = new Stack();
+    let rword = '';
 
-stack.push(100);
-stack.push(200);
-stack.push(300);
-stack.clear();
-console.log(stack);
-// console.log(stack.size());
-// console.log(stack.peak());
-// stack.pop();
-// stack.pop();
-// stack.pop();
-// console.log(stack.isEmpty());
+    for (let i = 0; i < word.length; i++) {
+        stack.push(word[i]);
+    }
+
+    while (stack.size() > 0) {
+        rword += stack.pop();
+    }
+
+    if (word === rword) return true;
+
+    return false;
+}
+
+console.log(isPalindrom());

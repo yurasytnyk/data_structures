@@ -11,7 +11,6 @@ class Stack {
     }
 
     push(value) {
-        console.log('Push');
         const node = new Node(value);
         node.next = this.top;
         this.top = node;
