@@ -54,4 +54,28 @@ function isPalindrom() {
     return false;
 }
 
-console.log(isPalindrom());
+//console.log(isPalindrom());
+
+function checkParentacies() {
+    const str = '{}';
+    const stack = new Stack();
+
+    for (let i = 0; i < str.length; i++) {
+        const char = stack[stack.size() - 1];
+        
+        if (str[i] === '{' || str[i] === '[' || str[i] === '(') {
+            stack.push(str[i]);
+        } else if ( (str[i] === ')' && char === '(') || 
+                    (str[i] === '}' && char === '{') || 
+                    (str[i] === ']' && char === '[') ) 
+        {
+            stack.pop();
+        } else {
+            return false;
+        }
+    }
+
+    return stack.size() ? false : true;
+}
+
+// console.log(checkParentacies());
