@@ -62,25 +62,44 @@ class LinkedList {
     remove(index) {
         if (index < 0 || index > this.size) return;
 
-        let value = this.head.value;
+        let value = null;
 
         if (index === 0) {
             this.head = this.head.next;
-            return value;
+            value = this.head.value;
+        } else {
+            let current = this.head;
+
+            for (let i = 0; i < index - 1; i++) {
+                current = current.next;
+            }
+    
+            value = current.next.value;
+            current.next = current.next.next;
         }
-
-        let current = this.head;
-
-        for (let i = 0; i < index - 1; i++) {
-            current = current.next;
-        }
-
-        value = current.next.value;
-        current.next = current.next.next;
 
         this._size--;
 
         return value;
+    }
+
+    replace(index, value) {
+        if (index < 0 || index > this.size) return;
+
+        const node = new Node(value);
+        let current = this.head;
+        
+        if (index === 0) {
+            node.next = this.head.next;
+            this.head = node;
+        } else {
+            for (let i = 0; i < index - 1; i++) {
+                current = current.next;
+            }
+    
+            node.next = current.next.next;
+            current.next = node;
+        }
     }
 
     *[Symbol.iterator]() {
@@ -102,5 +121,8 @@ list.prepend(1);
 list.append(4);
 list.append(3);
 list.insert(3, 5);
+list.replace(0, 10);
+list.replace(3, 25);
+
 console.log(list.remove(3));
 console.log(list.print());
