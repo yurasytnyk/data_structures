@@ -59,6 +59,30 @@ class LinkedList {
         this._size++;
     }
 
+    remove(index) {
+        if (index < 0 || index > this.size) return;
+
+        let value = this.head.value;
+
+        if (index === 0) {
+            this.head = this.head.next;
+            return value;
+        }
+
+        let current = this.head;
+
+        for (let i = 0; i < index - 1; i++) {
+            current = current.next;
+        }
+
+        value = current.next.value;
+        current.next = current.next.next;
+
+        this._size--;
+
+        return value;
+    }
+
     *[Symbol.iterator]() {
         let current = this.head;
 
@@ -78,4 +102,5 @@ list.prepend(1);
 list.append(4);
 list.append(3);
 list.insert(3, 5);
+console.log(list.remove(3));
 console.log(list.print());
