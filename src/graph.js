@@ -1,87 +1,76 @@
-Graph.UNDIRECTED = Symbol('directed graph');
-Graph.DIRECTED = Symbol('undirected graph');
-
 class Node {
     constructor(value) {
         this.value = value;
-        this.adjacents = [];
+        this.edgesList = [];
     }
 
-    addAdjacent(node) {
-        this.adjacents.push(node);
+    connect(node) {
+        this.edgesList.push(node);
+        node.edgesList.push(this);
     }
 
-    removeAdjacent(node) {
-        const index = this.adjacents.indexOf(node);
-
-        if (index > -1) {
-            this.adjacents.splice(index, 1);
-            return node;
-        }
+    getAdjacentNodes() {
+        return this.edgesList;
     }
 
-    getAdjacents() {
-        return this.adjacents;
-    }
-
-    isAdjacent(node) {
-        return this.adjacents.indexOf(node) > -1;
+    isConnected(node) {
+        return !!this.edgesList.find(edge => edge.value === node.value);
     }
 }
 
 class Graph {
-    constructor(edgeDirection = Graph.DIRECTED) {
-        this.nodes = new Map();
-        this.edgeDirection = edgeDirection;
+    constructor(nodes) {
+        this.nodes = [...nodes];
     }
 
-    addVertex(value) {
-        if (this.nodes.has(value)) {
-            return this.nodes.get(value);
-        } else {
-            const vertex = new Node(value);
-            this.nodes.set(value, vertex);
-            return vertex;
-        }
+    addToGraph(node) {
+        this.nodes.push(node);
     }
 
-    removeVertex(value) {
-        const current = this.nodes.get(value);
+    bfs(start) {
+        const queue = [start];
+        const visitedNodes = new Set();
+        visitedNodes.add(start);
 
-        if (current) {
-            for (const node of this.nodes.values()) {
-                node.removeAdjacent(current);
+        while(queue.length) {
+            // pull node queue (to visit)
+            // add its adjacencies to the queue
+            const node = queue.shift();
+
+            for (const adjacency of node.edgesList) {
+                if (!visitedNodes.has(adjacency)) {
+                    queue.push(adjacency);
+                    visitedNodes.add(adjacency);
+                }
             }
+
+            console.log(node.value);
         }
-
-        return this.nodes.delete(value);
-    }
-
-    addEdge(source, destination) {
-        const sourceNode = this.addVertex(source);
-        const destinationNode = this.addVertex(destination);
-
-        sourceNode.addAdjacent(destinationNode);
-
-        if (this.edgeDirection === Graph.UNDIRECTED) {
-            destinationNode.addAdjacent(sourceNode);
-        }
-
-        return [sourceNode, destinationNode];
-    }
-
-    removeEdge(source, destination) {
-        const sourceNode = this.nodes.get(source);
-        const destinationNode = this.nodes.get(destination);
-
-        if (sourceNode && destinationNode) {
-            sourceNode.removeAdjacent(destinationNode);
-
-            if (this.edgeDirection === Graph.UNDIRECTED) {
-                destinationNode.removeAdjacent(sourceNode);
-            }
-        }
-
-        return [sourceNode, destinationNode];
     }
 }
+
+const DFW = new Node('DFW');
+const JFK = new Node('JFK');
+const LAX = new Node('LAX');
+const HNL = new Node('HNL');
+const SAN = new Node('SAN');
+const EWR = new Node('EWR');
+const BOS = new Node('BOS');
+const MIA = new Node('MIA');
+const MCO = new Node('MCO');
+const PBI = new Node('PBI');
+
+const graph = new Graph([DFW, JFK, LAX, HNL, SAN, EWR, BOS, MIA, MCO, PBI]);
+
+DFW.connect(LAX);
+DFW.connect(JFK);
+LAX.connect(HNL);
+LAX.connect(EWR);
+LAX.connect(SAN);
+JFK.connect(BOS);
+JFK.connect(MIA);
+MIA.connect(MCO);
+MIA.connect(PBI);
+MCO.connect(PBI);
+
+graph.bfs(DFW);
