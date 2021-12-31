@@ -91,6 +91,24 @@ class BinaryTree {
 
         return this.postOrder(this.root, callback);
     }
+
+    traverseBFS(callback) {
+        const queue = [this.root];
+
+        while (queue.length) {
+            const node = queue.shift();
+
+            callback(node);
+
+            if (node.left) {
+                queue.push(node.left);
+            }
+
+            if (node.right) {
+                queue.push(node.right);
+            }
+        }
+    }
 }
 
 const tree = new BinaryTree();
@@ -99,6 +117,8 @@ tree.add(2);
 tree.add(6);
 tree.add(2);
 tree.add(1);
-tree.traverseDFS((node) => {
-    console.log(node.value);
-}, 'postOrder');
+// tree.traverseDFS((node) => {
+//     console.log(node.value);
+// }, 'postOrder');
+
+tree.traverseBFS((node) => console.log(node.value));
