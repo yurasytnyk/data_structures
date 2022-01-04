@@ -27,7 +27,7 @@ class Graph {
         this.nodes.push(node);
     }
 
-    bfs(start) {
+    bfs(start, end) {
         const queue = [start];
         const visitedNodes = new Set();
         visitedNodes.add(start);
@@ -36,6 +36,11 @@ class Graph {
             // pull node queue (to visit)
             // add its adjacencies to the queue
             const node = queue.shift();
+
+            if (node.value === end.value) {
+                console.log('Found it');
+                return;
+            }
 
             for (const adjacency of node.edgesList) {
                 if (!visitedNodes.has(adjacency)) {
@@ -73,4 +78,4 @@ MIA.connect(MCO);
 MIA.connect(PBI);
 MCO.connect(PBI);
 
-graph.bfs(DFW);
+graph.bfs(DFW, MIA);
